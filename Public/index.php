@@ -40,6 +40,18 @@ $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Welcome to our To-Do-List");
     return $response;
 });
+// Get all tasklists of an user
+$app->get('/tasks', function (Request $request, Response $response, $args) {
+    $tasklists = R::findAll('tasklist', 'user_id=:user_id', [':user_id'=>$request->getQueryParams()['user_id']]);
+    $response->getBody()->write(json_encode(R::exportAll($tasklists)));
+    return $response;
+});
+// Create new tasklist
+// Create new task
+// Change task
+// Delete tasklist
+// Create new User
+// Login --> compare input with DB-User
 
 $app->run();
 
