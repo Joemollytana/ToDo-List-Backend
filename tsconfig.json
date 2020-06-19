@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "sourceMap": false // debugger
+    }
+}
+
+//STRG + SHIFT + b -> tsc: build    -baut aus tsconfig.json und .ts die .js
+//                 -> tsc: watch    -schaut nach änderung der datei und passt an
+
+//stackblitz link https://stackblitz.com/edit/angular-ivy-keq44h?file=src%2Fapp%2Fapp.component.html
