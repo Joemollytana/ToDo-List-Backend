@@ -1,18 +1,18 @@
 # Datenhaltung 
 
 
-## Tabellen
+### Tabellen
 
 - Usertabelle / Logindaten
   Attribute:
   - Username
-  - Passwort (verschlüsselt)
-- Zwischentabelle (User zu Aufgabenliste)
-  - Fremdschlüssel: User & Aufgaben
-- Aufgabenliste
+  - Passwort (PHP Hash, kein SHA)
+- Zwischentabelle (Aufgabenliste)
+  - User-Fremdschlüssel
+- Aufgaben (alle)
   Attribute;
   - Name
   - Beschreibung
   - Umfang
   - Erledigt oder nicht
-  - 
+  - Aufgabenliste-Fremdschlüssel
