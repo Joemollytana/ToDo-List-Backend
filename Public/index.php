@@ -8,12 +8,14 @@ use Slim\Factory\AppFactory;
 require __DIR__ . '/../vendor/autoload.php';
 require 'rb.php';
 
-// R::setup('mysql:host=localhost; dbname=DATENBANKNAME', 'USER', 'PWD');
+/* Connect to DB */
+R::setup('mysql:host=localhost; dbname=todolistdb', 'root', '');
 
+/* Creates Slim-Application */
 $app = AppFactory::create();
 
 /*
-Nötig für SLIM 4 --> Definition des BasePath, damit der router die URL findet
+Needed for SLIM 4 --> definition of BasePath, so that router can find the URL
 */
 $app->setBasePath((function () {
     $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
@@ -32,8 +34,10 @@ $app->setBasePath((function () {
 /* 
 Routing 
 */
+/* GET-Requests */
+// Welcome Screen
 $app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Hello world!");
+    $response->getBody()->write("Welcome to our To-Do-List");
     return $response;
 });
 
