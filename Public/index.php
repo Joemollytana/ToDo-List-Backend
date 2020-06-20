@@ -48,7 +48,7 @@ $app->get('/tasklists', function (Request $request, Response $response, $args) {
 });
 // Create new empty tasklist
 $app->post('/newTasklist', function (Request $request, Response $response, $args) {
-    $user_id = $request->getQueryParams()['user_id'];
+    $user_id = $request->getQueryParams()['uid'];
     $newTasklist = R::dispense('tasklist');
     $newTasklist->user_id = $user_id;
     R::store($newTasklist);
@@ -56,6 +56,27 @@ $app->post('/newTasklist', function (Request $request, Response $response, $args
     return $response;
 });
 // Create new task
+$app->post('/newTask', function (Request $request, Response $response, $args) {
+    $taskname = $request->getQueryParams()['name'];
+    $description = $request->getQueryParams()['desc'];
+    $scope = $request->getQueryParams()['scope'];
+    $deadline = $request->getQueryParams()['d'];
+    $status = $request->getQueryParams()['stat'];
+    $tasklist_id = $request->getQueryParams()['tid'];
+
+    $newTask = R::dispense('tasks');
+
+    $newTask->taskname = $taskname;
+    $newTask->description = $description;
+    $newTask->scope = $scope;
+    $newTask->deadline = $deadline;
+    $newTask->status = $status;
+    $newTask->tasklist_id = $tasklist_id;
+
+    R::store($newTask);
+    $response->getBody()->write(json_encode($newTask));
+    return $response;
+});
 // Change task
 // Delete tasklist
 // Create new User
