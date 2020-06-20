@@ -40,12 +40,18 @@ $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Welcome to our To-Do-List");
     return $response;
 });
-// Get all tasklists of an user
+// Get all tasklists of an user, with all tasks and all user-information
 $app->get('/tasklists', function (Request $request, Response $response, $args) {
     $tasklists = R::findAll('tasklist', 'user_id=:user_id', [':user_id'=>$request->getQueryParams()['user_id']]);
+    foreach ($tasklists as $tasklist) {
+        $tasklist->user;
+    }
     $response->getBody()->write(json_encode(R::exportAll($tasklists)));
     return $response;
 });
+// Get one special tasklist of an user, with all tasks and all user-information
+
+/* POST-Requests */
 // Create new empty tasklist
 $app->post('/newTasklist', function (Request $request, Response $response, $args) {
     $user_id = $request->getQueryParams()['uid'];
@@ -77,9 +83,11 @@ $app->post('/newTask', function (Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode($newTask));
     return $response;
 });
-// Change task
+// Change task / tasklist
+// Registration --> Create new User
+/* DELETE-Requests */
 // Delete tasklist
-// Create new User
+
 // Login --> compare input with DB-User
 
 $app->run();
