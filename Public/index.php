@@ -41,12 +41,20 @@ $app->get('/', function (Request $request, Response $response, $args) {
     return $response;
 });
 // Get all tasklists of an user
-$app->get('/tasks', function (Request $request, Response $response, $args) {
+$app->get('/tasklists', function (Request $request, Response $response, $args) {
     $tasklists = R::findAll('tasklist', 'user_id=:user_id', [':user_id'=>$request->getQueryParams()['user_id']]);
     $response->getBody()->write(json_encode(R::exportAll($tasklists)));
     return $response;
 });
-// Create new tasklist
+// Create new empty tasklist
+$app->post('/newTasklist', function (Request $request, Response $response, $args) {
+    $user_id = $request->getQueryParams()['user_id'];
+    $newTasklist = R::dispense('tasklist');
+    $newTasklist->user_id = $user_id;
+    R::store($newTasklist);
+    $response->getBody()->write(json_encode($newTasklist));
+    return $response;
+});
 // Create new task
 // Change task
 // Delete tasklist
