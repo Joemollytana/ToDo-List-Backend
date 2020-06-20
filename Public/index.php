@@ -49,7 +49,15 @@ $app->get('/tasklists', function (Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode(R::exportAll($tasklists)));
     return $response;
 });
+// ########################   Ist das so gewünscht von Perschke, weil sinnlos?? ##################################
 // Get one special tasklist of an user, with all tasks and all user-information
+$app->get('/tasklist', function (Request $request, Response $response, $args) {
+    $listID = $request->getQueryParams()['tid'];
+    $tasklist = R::load('tasklist', $listID);
+    $tasklist->user;
+    $response->getBody()->write(json_encode(R::exportAll($tasklist)));
+    return $response;
+});
 
 /* POST-Requests */
 // Create new empty tasklist
