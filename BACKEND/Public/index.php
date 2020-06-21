@@ -158,7 +158,24 @@ $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $re
     return $response;
 });
 
-// Change task (David)
+// Change a task
+$app->put('/task', function (Request $request, Response $response, $args) {
+    $parsedBody = json_decode((string)$request->getBody(), true);
+
+    $task = R::load('tasks', $parsedBody['id']);
+
+    $task->taskname = $parsedBody['taskname'];
+    $task->description = $parsedBody['description'];
+    $task->scope = $parsedBody['scope'];
+    $task->deadline = $parsedBody['deadline'];
+    $task->status = $parsedBody['status'];
+    $task->tasklist_id = $parsedBody['tasklist_id'];
+
+    R::store($task);
+
+    $response->getBody()->write(json_encode($task));
+     return $response;
+    });
 
 /* DELETE-Requests */
 // bearbeiten 'if'
