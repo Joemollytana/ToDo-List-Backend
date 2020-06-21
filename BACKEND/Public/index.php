@@ -129,10 +129,11 @@ $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $re
 
 
 
-// Change task / tasklist
+// Change task (David)
 // Registration --> Create new User
 /* DELETE-Requests */
 // Delete tasklist
+// Delete User
 
 // Login --> compare input with DB-User
 
