@@ -44,15 +44,15 @@ $app->get('/', function (Request $request, Response $response, $args) {
 // ******** die beiden geben ein gleiches ergebniss aus, sollte aber nicht so sein boi oder? *******
 $app->get('/lists_user', function (Request $request, Response $response, $args) {
     $lists = R::findAll('user');
-    $response->getBody()->write(json_encode(R::exportAll($lists, TRUE)));
+    $response->getBody()->write(json_encode($lists));
     return $response;
 });
-$app->get('/lists_list', function (Request $request, Response $response, $args) {
+/* $app->get('/lists_list', function (Request $request, Response $response, $args) {
     $lists = R::findAll('tasklist');
-    $response->getBody()->write(json_encode(R::exportAll($lists, TRUE)));
+    $response->getBody()->write(json_encode($lists)));
     return $response;
 });
-
+ */
 
 /* GET-Requests */
 // Get all tasklists of an user, with all tasks and all user-information
@@ -112,7 +112,7 @@ $app->post('/newTask', function (Request $request, Response $response, $args) {
 $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     R::trash($tasklist);
-    $response->getBody()->write(json_encode($tasklist));
+    $response->getBody()->write('Auslöschung erfolgreich');
     return $response;
 });
 
@@ -120,20 +120,22 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTaskList[$args['taskId']];
+    /* if $task->status == beendet */
     unset($tasklist->xownTasksList[$args['taskId']]);
     $response->getBody()->write(json_encode($tasklist));
     R::store( $tasklist );
     return $response;
 });
 
-
-
-
 // Change task (David)
-// Registration --> Create new User
+
 /* DELETE-Requests */
+// bearbeiten 'if'
+// delete, create, change user
+// Registration --> Create new User
 // Delete tasklist
 // Delete User
+
 
 // Login --> compare input with DB-User
 
