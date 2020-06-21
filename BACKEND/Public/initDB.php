@@ -8,6 +8,8 @@ echo "Die notwendige Datenbank wird für Sie mit Beispieldaten bestückt.\n";
 /* Connection to pre-created database "todolistdb" as root */
 R::setup('mysql:host=localhost; dbname=todolistdb', 'root', '');
 
+//delete all tables before
+R::nuke();
 
 /* Necessary tables */
 $user = R::dispense('user');

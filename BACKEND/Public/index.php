@@ -40,6 +40,21 @@ $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Welcome to our To-Do-List");
     return $response;
 });
+
+// ******** die beiden geben ein gleiches ergebniss aus, sollte aber nicht so sein boi oder? *******
+$app->get('/lists_user', function (Request $request, Response $response, $args) {
+    $lists = R::findAll('user');
+    $response->getBody()->write(json_encode(R::exportAll($lists, TRUE)));
+    return $response;
+});
+$app->get('/lists_list', function (Request $request, Response $response, $args) {
+    $lists = R::findAll('tasklist');
+    $response->getBody()->write(json_encode(R::exportAll($lists, TRUE)));
+    return $response;
+});
+
+
+/* GET-Requests */
 // Get all tasklists of an user, with all tasks and all user-information
 $app->get('/tasklists', function (Request $request, Response $response, $args) {
     $tasklists = R::findAll('tasklist', 'user_id=:user_id', [':user_id'=>$request->getQueryParams()['user_id']]);
@@ -50,14 +65,14 @@ $app->get('/tasklists', function (Request $request, Response $response, $args) {
     return $response;
 });
 // ########################   Ist das so gewünscht von Perschke, weil sinnlos?? ##################################
-// Get one special tasklist of an user, with all tasks and all user-information
-$app->get('/tasklist', function (Request $request, Response $response, $args) {
-    $listID = $request->getQueryParams()['tid'];
-    $tasklist = R::load('tasklist', $listID);
+// Get one special tasklist by id, with all tasks and all user-information
+$app->get('/tasklist/{tasklistId}', function (Request $request, Response $response, $args) {
+    $tasklist = R::load('tasklist', $args['tasklistId']);
     $tasklist->user;
     $response->getBody()->write(json_encode(R::exportAll($tasklist)));
     return $response;
 });
+
 
 /* POST-Requests */
 // Create new empty tasklist
@@ -91,6 +106,29 @@ $app->post('/newTask', function (Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode($newTask));
     return $response;
 });
+
+/* DELETE-Requests */
+// Delete tasklist with chosen id (ACHTUNG, nicht berechtigte user können das auch!)
+$app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Response $response, $args) {
+    $tasklist = R::load('tasklist', $args['tasklistId']);
+    R::trash($tasklist);
+    $response->getBody()->write(json_encode($tasklist));
+    return $response;
+});
+
+//delete task in a tasklist
+$app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
+    $tasklist = R::load('tasklist', $args['tasklistId']);
+    $task = $tasklist->xownTaskList[$args['taskId']];
+    unset($tasklist->xownTasksList[$args['taskId']]);
+    $response->getBody()->write(json_encode($tasklist));
+    R::store( $tasklist );
+    return $response;
+});
+
+
+
+
 // Change task / tasklist
 // Registration --> Create new User
 /* DELETE-Requests */
