@@ -99,7 +99,7 @@ $app->post('/tasklist', function (Request $request, Response $response, $args) {
     return $response;
 });
 // Create new task
-$app->post('/newTask', function (Request $request, Response $response, $args) {
+/* $app->post('/newTask', function (Request $request, Response $response, $args) {
     $taskname = $request->getQueryParams()['name'];
     $description = $request->getQueryParams()['desc'];
     $scope = $request->getQueryParams()['scope'];
@@ -118,6 +118,23 @@ $app->post('/newTask', function (Request $request, Response $response, $args) {
 
     R::store($newTask);
     $response->getBody()->write(json_encode($newTask));
+    return $response;
+});
+*/
+$app->post('/task', function (Request $request, Response $response, $args) {
+    $parsedBody = $request->getParsedBody();
+
+    $task = R::dispense('tasks');
+    $task->taskname = $parsedBody['taskname'];
+    $task->description = $parsedBody['description'];
+    $task->scope = $parsedBody['scope'];
+    $task->deadline = $parsedBody['deadline'];
+    $task->status = $parsedBody['status'];
+    $task->tasklist_id = $parsedBody['tasklist_id'];
+
+    R::store($task);
+
+    $response->getBody()->write(json_encode($task));
     return $response;
 });
 
