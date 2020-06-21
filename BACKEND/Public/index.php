@@ -76,12 +76,26 @@ $app->get('/tasklist/{tasklistId}', function (Request $request, Response $respon
 
 /* POST-Requests */
 // Create new empty tasklist
-$app->post('/newTasklist', function (Request $request, Response $response, $args) {
+/*$app->post('/newTasklist', function (Request $request, Response $response, $args) {
     $user_id = $request->getQueryParams()['uid'];
     $newTasklist = R::dispense('tasklist');
     $newTasklist->user_id = $user_id;
     R::store($newTasklist);
     $response->getBody()->write(json_encode($newTasklist));
+    return $response;
+});
+*/
+$app->post('/tasklist', function (Request $request, Response $response, $args) {
+    $parsedBody = $request->getParsedBody();
+
+    $tasklist = R::dispense('tasklist');
+    //$tasklist->user_id = $parsedBody['user_id'];      // ### Alternative --> funktioniert genauso 
+    $user = R::load('user', $parsedBody['user_id']);
+    $tasklist->user = $user;
+
+    R::store($tasklist);
+
+    $response->getBody()->write(json_encode($tasklist));
     return $response;
 });
 // Create new task
