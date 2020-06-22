@@ -19,6 +19,7 @@
 
 - ~~boolean Parameter einführen, mit dem überprüft wird, ob der User bereits eingeloggt ist und dementsprechend seine Listen sehen kann oder nicht ~~
 - Restliche Routen fertig stellen (mit Kommentaren im Code gekennzeichnet welche Routen) 
+  - In Abspracht mit Andrey die alten POST-Routen (newTasklist & new Task) löschen (Inhalt wird jetzt über den HTTP-Body (JSON) statt über die URL übermittelt)
 
 // Change task /
 

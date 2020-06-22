@@ -143,10 +143,9 @@ $app->post('/task', function (Request $request, Response $response, $args) {
 $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     R::trash($tasklist);
-    $response->getBody()->write('Auslöschung erfolgreich');
+    $response->getBody()->write('Löschvorgang erfolgreich');
     return $response;
 });
-
 //delete task in a tasklist
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
@@ -155,6 +154,12 @@ $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $re
     unset($tasklist->xownTasksList[$args['taskId']]);
     $response->getBody()->write(json_encode($tasklist));
     R::store( $tasklist );
+    return $response;
+});
+$app->delete('/user/{user_id}', function (Request $request, Response $response, $args) {
+    $user = R::load('user', $args['user_id']);
+    R::trash($user);
+    $response->getBody()->write("Löschvorgang erfolgreich");
     return $response;
 });
 
