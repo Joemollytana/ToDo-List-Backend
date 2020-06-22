@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+ }
+ nav, main {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+ }
+ nav {
+  width: 300px;
+ }
+ main {
+  width: 100%;
+ }
+ 
