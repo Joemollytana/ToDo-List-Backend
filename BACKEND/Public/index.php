@@ -119,7 +119,7 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
 });
 
 // delete task in a tasklist
-// #####################   @andrey - Reicht hier nicht die taskID?   ##################################
+// #####################   @andrey - Reicht hier nicht die taskID als Parameter?   ##################################
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTaskList[$args['taskId']];
@@ -130,11 +130,13 @@ $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $re
     return $response;
 });
 
-// Delete a user by his ID
+// Delete a user by his ID and all of his tasklists (and tasks)
 $app->delete('/user/{user_id}', function (Request $request, Response $response, $args) {
     $user = R::load('user', $args['user_id']);
+    $tasklist = R::find('tasklist', 'user_id = ? ', [$args['user_id']]);
     R::trash($user);
-    $response->getBody()->write("Löschvorgang erfolgreich");
+    R::trashAll($tasklist);
+    $response->getBody()->write("done");
     return $response;
 });
 
@@ -153,9 +155,9 @@ $app->put('/task', function (Request $request, Response $response, $args) {
         $task->deadline = $parsedBody['deadline'];
         $task->status = $parsedBody['status'];
         $task->tasklist_id = $parsedBody['tasklist_id'];
+        R::store($task);
     }
     $response->getBody()->write(json_encode($task));
-    R::store($task);
     return $response;
 });
 
@@ -164,7 +166,7 @@ $app->put('/task', function (Request $request, Response $response, $args) {
 /* ToDO */
 
 // bearbeiten 'if'
-// delete, create, change user
+// create, change user
 // Registration --> Create new User
 
 
