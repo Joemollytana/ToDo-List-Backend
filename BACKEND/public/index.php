@@ -28,6 +28,17 @@ $app->setBasePath((function () {
     return '';
 })());
 
+/* 
+Enable lazy CORS --> Allows the (external) Angular-Server to make a request to the Apache-Server (BE)
+*/
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+
 
 
 
@@ -53,7 +64,7 @@ $app->get('/lists_user', function (Request $request, Response $response, $args) 
  */
 
 // Get all tasklists of an user, with all tasks and all user-information
-$app->get('/tasklist', function (Request $request, Response $response, $args) {
+$app->get('/tasklists', function (Request $request, Response $response, $args) {
     $tasklists = R::findAll('tasklist', 'user_id=:user_id', [':user_id'=>$request->getQueryParams()['user_id']]);
     foreach ($tasklists as $tasklist) {
         $tasklist->user;
