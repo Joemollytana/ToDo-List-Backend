@@ -209,6 +209,16 @@ $app->put('/task', function (Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode($task));
     return $response;
 });
+// Update an existing Useraccount 
+$app->put('/user/{uid}', function (Request $request, Response $response, $args) {
+    $parsedBody = json_decode((string)$request->getBody(), true);
+    $user = R::load('tasks', $args['user_id']);
+    $user->username = $parsedBody['username'];
+    $user->password = password_hash($parsedBody['password'], PASSWORD_DEFAULT);
+    R::store($user);
+    $response->getBody()->write(json_encode($user));
+    return $response;
+});
 
 
 
