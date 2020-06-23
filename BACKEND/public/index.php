@@ -134,7 +134,7 @@ return $response;
 
 //login ****************+ nochmal überdenken
 $app->post('/login', function (Request $request, Response $response, $args){
-$pasedBody = $request->getParsedBody();
+    $pasedBody = $request->getParsedBody();
 
 
 });
@@ -152,7 +152,6 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
 });
 
 // delete task in a tasklist
-// #####################   @andrey - Reicht hier nicht die taskID als Parameter?   ##################################
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTaskList[$args['taskId']];
@@ -190,12 +189,9 @@ $app->put('/task', function (Request $request, Response $response, $args) {
         $task->scope = $parsedBody['scope'];
         $task->deadline = $parsedBody['deadline'];
         $task->status = $parsedBody['status'];
-        // tasklist shoud not change
         $task->tasklist_id = $task->tasklist_id;
         R::store($task);
     }
-    /* --> Bei einem PUT müssen ja alle Attribute neu gesetzt werden.
-     *     Das dann notwendig? 
     else {
         $task->taskname = $task->taskname;
         $task->description = $task->description;
@@ -205,31 +201,22 @@ $app->put('/task', function (Request $request, Response $response, $args) {
         $task->tasklist_id = $task->tasklist_id;
         R::store($task);
     }
-    */
     $response->getBody()->write(json_encode($task));
     return $response;
 });
 // Update an existing Useraccount 
 $app->put('/user/{uid}', function (Request $request, Response $response, $args) {
     $parsedBody = json_decode((string)$request->getBody(), true);
-    $user = R::load('tasks', $args['user_id']);
-    $user->username = $parsedBody['username'];
+    $user = R::load('user', $args['uid']);
+    $user->username = $user->username;
     $user->password = password_hash($parsedBody['password'], PASSWORD_DEFAULT);
     R::store($user);
     $response->getBody()->write(json_encode($user));
     return $response;
 });
 
-
-
-/* ToDO */
-
 // bearbeiten 'if' testen
 // create user testen
-// change user ********************** brauchen wir das? *****************
-
-
-// Login --> compare input with DB-User
 
 $app->run();
 
