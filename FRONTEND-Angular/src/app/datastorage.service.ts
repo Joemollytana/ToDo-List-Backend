@@ -10,6 +10,11 @@ export class DatastorageService {
   constructor(private httpClient: HttpClient) { }
 
   loadAllUser(): Observable<any> {
-    return this.httpClient.get("http://localhost/Perschke-Webanwendung/BACKEND/public/tasklists?user_id=1");
+    // lädt aktuell nur den User mit der ID = 1. 
+    return this.httpClient.get("/Perschke-Webanwendung/BACKEND/public/index.php/tasklists?user_id=1");
+  }
+
+  updateTasks(task) {
+    this.httpClient.put("/Perschke-Webanwendung/BACKEND/public/index.php/task", task).subscribe(data => console.log(data));
   }
 }

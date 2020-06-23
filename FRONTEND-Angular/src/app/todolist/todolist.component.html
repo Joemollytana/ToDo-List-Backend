@@ -1,1 +1,6 @@
-<p>todolist works!</p>
+<ul>
+  <li *ngFor="let tasklist of tasklists" (click)="selectTasklist(tasklist)">
+    {{ tasklist.id }}
+  </li>
+</ul>
+<app-tasks [tasks]="tasks"></app-tasks>

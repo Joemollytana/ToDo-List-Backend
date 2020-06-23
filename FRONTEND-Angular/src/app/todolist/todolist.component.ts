@@ -13,6 +13,7 @@ export class TodolistComponent implements OnInit {
 
   // Variables
   tasklists: any[] = [];
+  tasks: any[] = null;
 
   constructor(public datastorage: DatastorageService) { }
 
@@ -27,8 +28,13 @@ export class TodolistComponent implements OnInit {
   getAllTasklists() {
     this.datastorage.loadAllUser().subscribe(data => {
       this.tasklists = data;
-      //console.log(this.tasklists);
+      console.log(this.tasklists);
     });
+  }
+
+  selectTasklist(selection) {
+    this.tasks = selection;
+    console.log(this.tasks);
   }
 
 }

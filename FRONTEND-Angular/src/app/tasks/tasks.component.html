@@ -1,0 +1,37 @@
+<div *ngIf="tasks != null">
+  
+    <table border="1px solid black">
+      <div *ngFor="let task of tasks.ownTasks">
+        <tr>
+          <td>ID:</td>
+          <td><input [(ngModel)]="task.id"></td>
+        </tr>
+        <tr>
+          <td>Aufgabe:</td>
+          <td><input [(ngModel)]="task.taskname"></td>
+        </tr>
+        <tr>
+          <td>Beschreibung:</td>
+          <td><input [(ngModel)]="task.description"></td>
+        </tr>
+        <tr>
+          <td>Umfang:</td>
+          <td><input [(ngModel)]="task.scope"></td>
+        </tr>
+        <tr>
+          <td>Abgabetermin:</td>
+          <td><input [(ngModel)]="task.deadline"></td>
+        </tr>
+        <tr>
+          <td>Status:</td>
+          <td><input [(ngModel)]="task.status"></td>
+        </tr>
+      </div>
+      <tr>
+        <td colspan="2"><button (click)="updateTasks()">Speichern</button></td>
+       </tr>
+    </table>
+    <br>
+</div>
+
+<div *ngIf="tasks == null">Sie können eine Aufgabenliste mit einem Klick auswählen.</div>

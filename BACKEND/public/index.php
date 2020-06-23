@@ -8,6 +8,9 @@ use Slim\Factory\AppFactory;
 require __DIR__ . '/../vendor/autoload.php';
 require 'rb.php';
 
+// allow CORS on the server side 
+//header('Access-Control-Allow-Origin: *');
+
 /* Connect to DB */
 R::setup('mysql:host=localhost; dbname=todolistdb', 'root', '');
 
@@ -46,11 +49,6 @@ $app->add(function ($request, $handler) {
 Routing 
 */
 /* GET-Requests */
-// Welcome Screen
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Welcome to our To-Do-List");
-    return $response;
-});
 
 // ******** die beiden geben ein gleiches ergebniss aus, sollte aber nicht so sein boi oder? *******
 $app->get('/lists_user', function (Request $request, Response $response, $args) {
@@ -87,15 +85,6 @@ $app->get('/tasklist/{tasklistId}', function (Request $request, Response $respon
 
 /* POST-Requests */
 // Create new empty tasklist
-/*$app->post('/newTasklist', function (Request $request, Response $response, $args) {
-    $user_id = $request->getQueryParams()['uid'];
-    $newTasklist = R::dispense('tasklist');
-    $newTasklist->user_id = $user_id;
-    R::store($newTasklist);
-    $response->getBody()->write(json_encode($newTasklist));
-    return $response;
-});
-*/
 $app->post('/tasklist', function (Request $request, Response $response, $args) {
     $parsedBody = $request->getParsedBody();
 
@@ -110,28 +99,6 @@ $app->post('/tasklist', function (Request $request, Response $response, $args) {
     return $response;
 });
 // Create new task
-/* $app->post('/newTask', function (Request $request, Response $response, $args) {
-    $taskname = $request->getQueryParams()['name'];
-    $description = $request->getQueryParams()['desc'];
-    $scope = $request->getQueryParams()['scope'];
-    $deadline = $request->getQueryParams()['d'];
-    $status = $request->getQueryParams()['stat'];
-    $tasklist_id = $request->getQueryParams()['tid'];
-
-    $newTask = R::dispense('tasks');
-
-    $newTask->taskname = $taskname;
-    $newTask->description = $description;
-    $newTask->scope = $scope;
-    $newTask->deadline = $deadline;
-    $newTask->status = $status;
-    $newTask->tasklist_id = $tasklist_id;
-
-    R::store($newTask);
-    $response->getBody()->write(json_encode($newTask));
-    return $response;
-});
-*/
 $app->post('/task', function (Request $request, Response $response, $args) {
     $parsedBody = $request->getParsedBody();
 
