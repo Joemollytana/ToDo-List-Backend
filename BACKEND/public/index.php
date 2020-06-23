@@ -165,9 +165,22 @@ $app->put('/task', function (Request $request, Response $response, $args) {
         $task->scope = $parsedBody['scope'];
         $task->deadline = $parsedBody['deadline'];
         $task->status = $parsedBody['status'];
-        $task->tasklist_id = $parsedBody['tasklist_id'];
+        // tasklist shoud not change
+        $task->tasklist_id = $task->tasklist_id;
         R::store($task);
     }
+    /* --> Bei einem PUT müssen ja alle Attribute neu gesetzt werden.
+     *     Das dann notwendig? 
+    else {
+        $task->taskname = $task->taskname;
+        $task->description = $task->description;
+        $task->scope = $task->scope;
+        $task->deadline = $task->deadline;
+        $task->status = $task->status;
+        $task->tasklist_id = $task->tasklist_id;
+        R::store($task);
+    }
+    */
     $response->getBody()->write(json_encode($task));
     return $response;
 });
