@@ -131,6 +131,7 @@ $response->getBody()->write(json_encode($user));
 return $response;
 });
 
+
 //login ****************+ nochmal überdenken
 $app->post('/login', function (Request $request, Response $response, $args){
 $pasedBody = $request->getParsedBody();
@@ -155,7 +156,7 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTaskList[$args['taskId']];
-    if ($task->status = "erledigt") {
+    if ($task->status == "erledigt") {
         $response->getBody()->write("task ist erledigt und kann nicht gelöscht werden");
     } else {
         unset($tasklist->xownTasksList[$args['taskId']]);
