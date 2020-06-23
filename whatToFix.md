@@ -36,3 +36,7 @@
 
 - interaction clientseitig... 
 angular typescript
+
+### todolist-Komponente
+
+- Evtl. Umbenennung in tasklist, um einheitlich zu bleiben. Habe bei der Erstellung nicht nachgedacht. Für die Umbenennung müsste die gesamte Datei über die CLI gelöscht und neu erstellt werden. 
