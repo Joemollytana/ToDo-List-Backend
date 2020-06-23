@@ -117,6 +117,28 @@ $app->post('/task', function (Request $request, Response $response, $args) {
     return $response;
 });
 
+// Create user
+$app->post('/user', function (Request $request, Response $response, $args) {
+$parsedBody = $request->getParsedBody();
+
+$user = R::dispense('user');
+$user->username = $parsedBody['username'];
+$user->password = password_hash($parsedBody['password'], PASSWORD_DEFAULT);
+
+R::store($user);
+
+$response->getBody()->write(json_encode($user));
+return $response;
+});
+
+
+//login ****************+ nochmal überdenken
+$app->post('/login', function (Request $request, Response $response, $args){
+$pasedBody = $request->getParsedBody();
+
+
+});
+
 
 
 /* DELETE-Requests */
@@ -134,10 +156,13 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTaskList[$args['taskId']];
-    /* if $task->status == beendet */
-    unset($tasklist->xownTasksList[$args['taskId']]);
-    $response->getBody()->write(json_encode($tasklist));
-    R::store( $tasklist );
+    if ($task->status == "erledigt") {
+        $response->getBody()->write("task ist erledigt und kann nicht gelöscht werden");
+    } else {
+        unset($tasklist->xownTasksList[$args['taskId']]);
+        $response->getBody()->write(json_encode($tasklist));
+        R::store( $tasklist );
+    }
     return $response;
 });
 
@@ -189,9 +214,9 @@ $app->put('/task', function (Request $request, Response $response, $args) {
 
 /* ToDO */
 
-// bearbeiten 'if'
-// create, change user
-// Registration --> Create new User
+// bearbeiten 'if' testen
+// create user testen
+// change user ********************** brauchen wir das? *****************
 
 
 // Login --> compare input with DB-User
