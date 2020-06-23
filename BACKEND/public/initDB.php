@@ -13,7 +13,7 @@ R::nuke();
 
 /* Necessary tables */
 $user1 = R::dispense('user');
-$user1 = R::dispense('user');
+$user2 = R::dispense('user');
 $task1 = R::dispense('tasks');
 $task2 = R::dispense('tasks');
 $task3 = R::dispense('tasks');

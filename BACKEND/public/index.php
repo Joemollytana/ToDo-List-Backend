@@ -1,4 +1,5 @@
 <?php
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -14,9 +15,7 @@ R::setup('mysql:host=localhost; dbname=todolistdb', 'root', '');
 /* Creates Slim-Application */
 $app = AppFactory::create();
 
-/*
-Needed for SLIM 4 --> definition of BasePath, so that router can find the URL
-*/
+/* Needed for SLIM 4 --> definition of BasePath, so that router can find the URL */
 $app->setBasePath((function () {
     $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
     $uri = (string) parse_url('http://a' . $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
@@ -31,17 +30,16 @@ $app->setBasePath((function () {
 
 
 
+
+
 /* 
 Routing 
 */
-/* GET-Requests */
-// Welcome Screen
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write("Welcome to our To-Do-List");
-    return $response;
-});
 
-// ******** die beiden geben ein gleiches ergebniss aus, sollte aber nicht so sein boi oder? *******
+
+/* GET-Requests */
+
+// Show all user
 $app->get('/lists_user', function (Request $request, Response $response, $args) {
     $lists = R::findAll('user');
     $response->getBody()->write(json_encode($lists));
@@ -54,9 +52,8 @@ $app->get('/lists_user', function (Request $request, Response $response, $args) 
 });
  */
 
-/* GET-Requests */
 // Get all tasklists of an user, with all tasks and all user-information
-$app->get('/tasklists', function (Request $request, Response $response, $args) {
+$app->get('/tasklist', function (Request $request, Response $response, $args) {
     $tasklists = R::findAll('tasklist', 'user_id=:user_id', [':user_id'=>$request->getQueryParams()['user_id']]);
     foreach ($tasklists as $tasklist) {
         $tasklist->user;
@@ -64,7 +61,7 @@ $app->get('/tasklists', function (Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode(R::exportAll($tasklists)));
     return $response;
 });
-// ########################   Ist das so gewünscht von Perschke, weil sinnlos?? ##################################
+
 // Get one special tasklist by id, with all tasks and all user-information
 $app->get('/tasklist/{tasklistId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
@@ -74,22 +71,14 @@ $app->get('/tasklist/{tasklistId}', function (Request $request, Response $respon
 });
 
 
+
 /* POST-Requests */
+
 // Create new empty tasklist
-/*$app->post('/newTasklist', function (Request $request, Response $response, $args) {
-    $user_id = $request->getQueryParams()['uid'];
-    $newTasklist = R::dispense('tasklist');
-    $newTasklist->user_id = $user_id;
-    R::store($newTasklist);
-    $response->getBody()->write(json_encode($newTasklist));
-    return $response;
-});
-*/
 $app->post('/tasklist', function (Request $request, Response $response, $args) {
     $parsedBody = $request->getParsedBody();
 
-    $tasklist = R::dispense('tasklist');
-    //$tasklist->user_id = $parsedBody['user_id'];      // ### Alternative --> funktioniert genauso 
+    $tasklist = R::dispense('tasklist'); 
     $user = R::load('user', $parsedBody['user_id']);
     $tasklist->user = $user;
 
@@ -98,29 +87,8 @@ $app->post('/tasklist', function (Request $request, Response $response, $args) {
     $response->getBody()->write(json_encode($tasklist));
     return $response;
 });
+
 // Create new task
-/* $app->post('/newTask', function (Request $request, Response $response, $args) {
-    $taskname = $request->getQueryParams()['name'];
-    $description = $request->getQueryParams()['desc'];
-    $scope = $request->getQueryParams()['scope'];
-    $deadline = $request->getQueryParams()['d'];
-    $status = $request->getQueryParams()['stat'];
-    $tasklist_id = $request->getQueryParams()['tid'];
-
-    $newTask = R::dispense('tasks');
-
-    $newTask->taskname = $taskname;
-    $newTask->description = $description;
-    $newTask->scope = $scope;
-    $newTask->deadline = $deadline;
-    $newTask->status = $status;
-    $newTask->tasklist_id = $tasklist_id;
-
-    R::store($newTask);
-    $response->getBody()->write(json_encode($newTask));
-    return $response;
-});
-*/
 $app->post('/task', function (Request $request, Response $response, $args) {
     $parsedBody = $request->getParsedBody();
 
@@ -138,7 +106,10 @@ $app->post('/task', function (Request $request, Response $response, $args) {
     return $response;
 });
 
+
+
 /* DELETE-Requests */
+
 // Delete tasklist with chosen id (ACHTUNG, nicht berechtigte user können das auch!)
 $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
@@ -146,7 +117,9 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
     $response->getBody()->write('Löschvorgang erfolgreich');
     return $response;
 });
-//delete task in a tasklist
+
+// delete task in a tasklist
+// #####################   @andrey - Reicht hier nicht die taskID als Parameter?   ##################################
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTaskList[$args['taskId']];
@@ -156,38 +129,45 @@ $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $re
     R::store( $tasklist );
     return $response;
 });
+
+// Delete a user by his ID and all of his tasklists (and tasks)
 $app->delete('/user/{user_id}', function (Request $request, Response $response, $args) {
     $user = R::load('user', $args['user_id']);
+    $tasklist = R::find('tasklist', 'user_id = ? ', [$args['user_id']]);
     R::trash($user);
-    $response->getBody()->write("Löschvorgang erfolgreich");
+    R::trashAll($tasklist);
+    $response->getBody()->write("done");
     return $response;
 });
 
-// Change a task
+
+
+/* PUT-Requests */
+
+// Change an existing task
 $app->put('/task', function (Request $request, Response $response, $args) {
     $parsedBody = json_decode((string)$request->getBody(), true);
-
     $task = R::load('tasks', $parsedBody['id']);
-
-    $task->taskname = $parsedBody['taskname'];
-    $task->description = $parsedBody['description'];
-    $task->scope = $parsedBody['scope'];
-    $task->deadline = $parsedBody['deadline'];
-    $task->status = $parsedBody['status'];
-    $task->tasklist_id = $parsedBody['tasklist_id'];
-
-    R::store($task);
-
+    if ($task->status != 'erledigt') {
+        $task->taskname = $parsedBody['taskname'];
+        $task->description = $parsedBody['description'];
+        $task->scope = $parsedBody['scope'];
+        $task->deadline = $parsedBody['deadline'];
+        $task->status = $parsedBody['status'];
+        $task->tasklist_id = $parsedBody['tasklist_id'];
+        R::store($task);
+    }
     $response->getBody()->write(json_encode($task));
-     return $response;
-    });
+    return $response;
+});
 
-/* DELETE-Requests */
+
+
+/* ToDO */
+
 // bearbeiten 'if'
-// delete, create, change user
+// create, change user
 // Registration --> Create new User
-// Delete tasklist
-// Delete User
 
 
 // Login --> compare input with DB-User
