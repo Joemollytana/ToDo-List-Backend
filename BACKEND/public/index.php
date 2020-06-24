@@ -188,19 +188,11 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
     $tasklist->user->name = $tasklist->user->name;
     $tasklist->user->password = $tasklist->user->password;
 
-    $tasklist->xownTasksList = [];
+    //$tasklist->xownTasksList = [];
+    $i = 1;
     foreach( $parsedBody['xownTasks'] as $z) {
-        $task = R::dispense('tasks');
-        if ($task->status != 'erledigt') {
-            $task->taskname = $z['taskname'];
-            $task->description = $z['description'];
-            $task->scope = $z['scope'];
-            $task->deadline = $z['deadline'];
-            $task->status = $z['status'];
-            $task->tasklist_id = $task->tasklist_id;
-            $tasklist->xownTasksList[] = $task; 
-        }
-        else {
+        $task = R::load('tasks', $i);
+        if ($task->status == 'erledigt' || $task->status == 'verspätet erledigt') {
             $task->taskname = $task->taskname;
             $task->description = $task->description;
             $task->scope = $task->scope;
@@ -209,6 +201,17 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
             $task->tasklist_id = $task->tasklist_id;
             $tasklist->xownTasksList[] = $task;
         }
+        else {
+            $task->id = $z['id'];
+            $task->taskname = $z['taskname'];
+            $task->description = $z['description'];
+            $task->scope = $z['scope'];
+            $task->deadline = $z['deadline'];
+            $task->status = $z['status'];
+            $task->tasklist_id = $task->tasklist_id;
+            $tasklist->xownTasksList[] = $task; 
+        }
+        $i += 1;
     }
     R::store($tasklist);
     $response->getBody()->write(json_encode($tasklist));
