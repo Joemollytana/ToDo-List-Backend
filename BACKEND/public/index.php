@@ -190,7 +190,7 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
 
     //$tasklist->xownTasksList = [];
     $i = 1;
-    foreach( $parsedBody['xownTasks'] as $z) {
+    foreach( $parsedBody['ownTasks'] as $z) {
         $task = R::load('tasks', $i);
         if ($task->status == 'erledigt' || $task->status == 'verspätet erledigt') {
             $task->taskname = $task->taskname;
@@ -199,7 +199,7 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
             $task->deadline = $task->deadline;
             $task->status = $task->status;
             $task->tasklist_id = $task->tasklist_id;
-            $tasklist->xownTasksList[] = $task;
+            $tasklist->ownTasksList[] = $task;
         }
         else {
             $task->id = $z['id'];
@@ -209,7 +209,7 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
             $task->deadline = $z['deadline'];
             $task->status = $z['status'];
             $task->tasklist_id = $task->tasklist_id;
-            $tasklist->xownTasksList[] = $task; 
+            $tasklist->ownTasksList[] = $task; 
         }
         $i += 1;
     }
