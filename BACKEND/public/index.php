@@ -90,6 +90,7 @@ $app->post('/tasklist', function (Request $request, Response $response, $args) {
     $parsedBody = $request->getParsedBody();
 
     $tasklist = R::dispense('tasklist'); 
+    $tasklist->tasklist_name = $parsedBody['tasklist_name'];
     $user = R::load('user', $parsedBody['user_id']);
     $tasklist->user = $user;
 
@@ -227,6 +228,9 @@ $app->put('/user/{uid}', function (Request $request, Response $response, $args) 
     $response->getBody()->write(json_encode($user));
     return $response;
 });
+
+//Change task ***************** change task fehlt so bissle ************
+
 
 // bearbeiten 'if' testen
 // create user testen

@@ -31,6 +31,10 @@ $user1->password = password_hash("asdf", PASSWORD_DEFAULT);
 $user2->username = "test";
 $user2->password = password_hash("fdsa", PASSWORD_DEFAULT);
 
+/* Taskliste */
+$tasklist1->tasklist_name = "Hauptaufgaben";
+$tasklist2->tasklist_name = "Nebenaufgaben";
+
 
 /* Tasks */
 $task1->taskname = "Wash dishes";
