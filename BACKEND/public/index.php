@@ -154,7 +154,7 @@ $app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Re
 // delete task in a tasklist
 $app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
-    $task = $tasklist->xownTaskList[$args['taskId']];
+    $task = $tasklist->xownTasksList[$args['taskId']];
     if ($task->status == "erledigt") {
         $response->getBody()->write("task ist erledigt und kann nicht gelöscht werden");
     } else {
@@ -179,29 +179,39 @@ $app->delete('/user/{user_id}', function (Request $request, Response $response, 
 
 /* PUT-Requests */
 
-// Change an existing task
-$app->put('/task', function (Request $request, Response $response, $args) {
+// Change an existing tasklist
+$app->put('/tasklist/{tlid}', function (Request $request, Response $response, $args) {
     $parsedBody = json_decode((string)$request->getBody(), true);
-    $task = R::load('tasks', $parsedBody['id']);
-    if ($task->status != 'erledigt') {
-        $task->taskname = $parsedBody['taskname'];
-        $task->description = $parsedBody['description'];
-        $task->scope = $parsedBody['scope'];
-        $task->deadline = $parsedBody['deadline'];
-        $task->status = $parsedBody['status'];
-        $task->tasklist_id = $task->tasklist_id;
-        R::store($task);
+    $tasklist = R::load('tasklist', $args['tlid']);
+
+    //$tasklist->user_id = $tasklist->user_id;
+    $tasklist->user->name = $tasklist->user->name;
+    $tasklist->user->password = $tasklist->user->password;
+
+    $tasklist->xownTasksList = [];
+    foreach( $parsedBody['xownTasks'] as $z) {
+        $task = R::dispense('tasks');
+        if ($task->status != 'erledigt') {
+            $task->taskname = $z['taskname'];
+            $task->description = $z['description'];
+            $task->scope = $z['scope'];
+            $task->deadline = $z['deadline'];
+            $task->status = $z['status'];
+            $task->tasklist_id = $task->tasklist_id;
+            $tasklist->xownTasksList[] = $task; 
+        }
+        else {
+            $task->taskname = $task->taskname;
+            $task->description = $task->description;
+            $task->scope = $task->scope;
+            $task->deadline = $task->deadline;
+            $task->status = $task->status;
+            $task->tasklist_id = $task->tasklist_id;
+            $tasklist->xownTasksList[] = $task;
+        }
     }
-    else {
-        $task->taskname = $task->taskname;
-        $task->description = $task->description;
-        $task->scope = $task->scope;
-        $task->deadline = $task->deadline;
-        $task->status = $task->status;
-        $task->tasklist_id = $task->tasklist_id;
-        R::store($task);
-    }
-    $response->getBody()->write(json_encode($task));
+    R::store($tasklist);
+    $response->getBody()->write(json_encode($tasklist));
     return $response;
 });
 // Update an existing Useraccount 
