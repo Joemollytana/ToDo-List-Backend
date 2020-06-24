@@ -81,6 +81,12 @@ $app->get('/tasklist/{tasklistId}', function (Request $request, Response $respon
     return $response;
 });
 
+$app->get('/tasks', function (Request $request, Response $response, $args) {
+    $tasks = R::findAll('tasks');
+    $response->getBody()->write(json_encode($tasks));
+    return $response;
+});
+
 
 
 /* POST-Requests */
@@ -155,7 +161,7 @@ $app->delete('/tasklist/{tasklistId}', function (Request $request, Response $res
 $app->delete('/task/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTasksList[$args['taskId']];
-    if ($task->status == "erledigt") {
+    if ($task->status == "erledigt" || $task->status == "verspätet erledigt") {
         $response->getBody()->write("task ist erledigt und kann nicht gelöscht werden");
     } else {
         unset($tasklist->xownTasksList[$args['taskId']]);
