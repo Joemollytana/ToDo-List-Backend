@@ -44,3 +44,4 @@
 - interaction clientseitig... 
 angular typescript
 - Login 
+- Ausblendung einer Aufgabe bis zu ihrer endgültigen Auslöscung (Hinter speicern button mehrere Routen)
