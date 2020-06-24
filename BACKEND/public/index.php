@@ -144,15 +144,15 @@ $app->post('/login', function (Request $request, Response $response, $args){
 /* DELETE-Requests */
 
 // Delete tasklist with chosen id (ACHTUNG, nicht berechtigte user können das auch!)
-$app->delete('/tasklist/deleteList/{tasklistId}', function (Request $request, Response $response, $args) {
+$app->delete('/tasklist/{tasklistId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     R::trash($tasklist);
-    $response->getBody()->write('Löschvorgang erfolgreich');
+    $response->getBody()->write(json_encode($tasklist));
     return $response;
 });
 
 // delete task in a tasklist
-$app->delete('/tasklist/deleteTask/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
+$app->delete('/task/{tasklistId}/{taskId}', function (Request $request, Response $response, $args) {
     $tasklist = R::load('tasklist', $args['tasklistId']);
     $task = $tasklist->xownTasksList[$args['taskId']];
     if ($task->status == "erledigt") {
