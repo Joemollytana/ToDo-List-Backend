@@ -93,7 +93,8 @@ $app->get('/tasks', function (Request $request, Response $response, $args) {
 
 // Create new empty tasklist
 $app->post('/tasklist', function (Request $request, Response $response, $args) {
-    $parsedBody = $request->getParsedBody();
+    //$parsedBody = $request->getParsedBody();
+    $parsedBody = json_decode((string)$request->getBody(), true);
 
     $tasklist = R::dispense('tasklist'); 
     $tasklist->tasklist_name = $parsedBody['tasklist_name'];
