@@ -108,7 +108,8 @@ $app->post('/tasklist', function (Request $request, Response $response, $args) {
 
 // Create new task
 $app->post('/task', function (Request $request, Response $response, $args) {
-    $parsedBody = $request->getParsedBody();
+    //$parsedBody = $request->getParsedBody();
+    $parsedBody = json_decode((string)$request->getBody(), true);
 
     $task = R::dispense('tasks');
     $task->taskname = $parsedBody['taskname'];
