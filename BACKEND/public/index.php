@@ -250,12 +250,6 @@ $app->put('/user/{uid}', function (Request $request, Response $response, $args) 
     return $response;
 });
 
-//Change task ***************** change task fehlt so bissle ************
-
-
-// bearbeiten 'if' testen
-// create user testen
-
 $app->run();
 
 ?> 

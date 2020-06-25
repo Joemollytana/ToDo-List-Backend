@@ -14,7 +14,7 @@
 
 ## Frontend 
 
-- **Login **
+- <u>**LOGIN**</u> (PRIO--> @David & @Andrey)
 - ~~Aufgaben adden~~
 - ~~Aufgabenliste erstellen~~
 - Navigation
@@ -24,9 +24,10 @@
     - ~~Auswählbare Aufgabenlisten~~
     - "Allgemeine" Kontrollelemente (~~createTasklist~~, deleteTasklist, changeUserPassword, ...)
     - **WICHTIG: Die Navigation sollte irgendwie als einzelne Komponente implementiert werden** --> aktuell wurde die Navigation in todolist implementiert. Problem ist, dass Navigation kein childElement von todlist ist und dementsprechend die Datenübertragung schwer ist. Bei der Auswahl der Aufgabenlist müsste ja von der Nav.Komponente über die todolist Komponente auf die task Komponente zugegriffen werden 
-- User-Feedback: 
+- User-Feedback: (@David)
   - Man kann erledigte Aufgaben nicht verändern 
   - " nicht löschen
   - Status dropdown 
 - Design (Angular Material)
   - Ausblendung einer Aufgabe bis zu ihrer endgültigen Auslöschung (Hinter speichern Button mehrere Routen)
+- **@David (alte Branches löschen wenn nicht mehr notwendig)**
