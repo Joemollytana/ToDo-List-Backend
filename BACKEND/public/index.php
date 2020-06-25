@@ -56,6 +56,19 @@ $app->get('/lists_user', function (Request $request, Response $response, $args) 
     $response->getBody()->write(json_encode($lists));
     return $response;
 });
+
+// login
+$app->get('/login', function (Request $request, Response $response, $args) {
+    $parsedBody = json_decode((string)$request->getBody(), true);
+    $user = R::find('user', 'username = "' . $parsedBody['username'] . '"',);
+    /*if ($user->password == password_hash($parsedBody['password'], PASSWORD_DEFAULT)) {
+        $response->getBody()->write('Successful');
+    }*/
+    //$response->getBody()->write(json_encode($user));
+    $response->getBody()->write();
+    return $response;
+});
+
 /* $app->get('/lists_list', function (Request $request, Response $response, $args) {
     $lists = R::findAll('tasklist');
     $response->getBody()->write(json_encode($lists)));
