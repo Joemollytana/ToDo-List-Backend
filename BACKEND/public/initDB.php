@@ -26,10 +26,10 @@ $tasklist2 = R::dispense('tasklist');
 
 /* Usertable */
 $user1->username = "test";
-$user1->password = password_hash("asdf", PASSWORD_DEFAULT);
+$user1->password = hash('sha256', 'asdf');
 
 $user2->username = "test";
-$user2->password = password_hash("fdsa", PASSWORD_DEFAULT);
+$user2->password = hash('sha256', 'fdsa');
 
 /* Taskliste */
 $tasklist1->tasklist_name = "Hauptaufgaben";
