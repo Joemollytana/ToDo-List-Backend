@@ -206,7 +206,7 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
     $parsedBody = json_decode((string)$request->getBody(), true);
     $tasklist = R::load('tasklist', $args['tlid']);
 
-    //$tasklist->user_id = $tasklist->user_id;
+    $tasklist->tasklist_name = $parsedBody['tasklist_name'];
     $tasklist->user->name = $tasklist->user->name;
     $tasklist->user->password = $tasklist->user->password;
 

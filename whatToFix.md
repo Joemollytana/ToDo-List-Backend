@@ -7,6 +7,7 @@
 ### ~~index.php (REST-API)~~
 
 - Auskommentierten Code ggf. wenn nicht mehr notwendig löschen
+- @David (alte Branches löschen wenn nicht mehr notwendig)
 
 
 
@@ -30,4 +31,5 @@
   - Status dropdown 
 - Design (Angular Material)
   - Ausblendung einer Aufgabe bis zu ihrer endgültigen Auslöschung (Hinter speichern Button mehrere Routen)
-- **@David (alte Branches löschen wenn nicht mehr notwendig)**
+- @David (alte Branches löschen wenn nicht mehr notwendig)
+- ~~BUG: Tasklistenname wird nicht umbenannt~~
