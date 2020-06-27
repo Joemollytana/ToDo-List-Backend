@@ -40,13 +40,13 @@ $tasklist2->tasklist_name = "Nebenaufgaben";
 $task1->taskname = "Wash dishes";
 $task1->description = "I have to wash my dishes.";
 $task1->scope = 4;
-$task1->deadline = NULL;
+$task1->deadline = date_create("2020-06-17");
 $task1->status = "offen";
 
 $task2->taskname = "Develop Web-App";
 $task2->description = "I have to develop a Web-App with PHP.";
 $task2->scope = 4;
-$task2->deadline = date_create("2020-07-01");
+$task2->deadline = date_create("2020-06-17");
 $task2->status = "In Bearbeitung";
 
 $task3->taskname = "Clean my desk";
