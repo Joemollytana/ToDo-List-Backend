@@ -211,9 +211,10 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
     $tasklist->user->password = $tasklist->user->password;
 
     //$tasklist->xownTasksList = [];
-    $i = 1;
+    //$i = 1;
     foreach( $parsedBody['ownTasks'] as $z) {
-        $task = R::load('tasks', $i);
+        //$task = R::load('tasks', $i);
+        $task = R::load('tasks', $z['id']);
         if ($task->status == 'erledigt' || $task->status == 'verspätet erledigt') {
             $task->taskname = $task->taskname;
             $task->description = $task->description;
@@ -233,7 +234,7 @@ $app->put('/tasklist/{tlid}', function (Request $request, Response $response, $a
             $task->tasklist_id = $task->tasklist_id;
             $tasklist->ownTasksList[] = $task; 
         }
-        $i += 1;
+        //$i += 1;
     }
     R::store($tasklist);
     $response->getBody()->write(json_encode($tasklist));
