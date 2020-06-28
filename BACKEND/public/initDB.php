@@ -40,37 +40,39 @@ $tasklist2->tasklist_name = "Nebenaufgaben";
 $task1->taskname = "Wash dishes";
 $task1->description = "I have to wash my dishes.";
 $task1->scope = 4;
-$task1->deadline = date_create("2020-06-17");
+$task1->deadline = date_format(date_create("2020-06-17"), 'Y-m-d');
+$task1->deadline = "2020-06-17";
 $task1->status = "offen";
 
 $task2->taskname = "Develop Web-App";
 $task2->description = "I have to develop a Web-App with PHP.";
 $task2->scope = 4;
-$task2->deadline = date_create("2020-06-17");
+$task2->deadline = date_format(date_create("2020-06-17"), 'Y-m-d');
+$task2->deadline = "2020-06-17";
 $task2->status = "In Bearbeitung";
 
 $task3->taskname = "Clean my desk";
 $task3->description = "I need to clean my desk, before I start to develop the Web-App.";
 $task3->scope = 1;
-$task3->deadline = date_create("2020-06-17");
+$task3->deadline = date_format(date_create("2020-06-17"), 'Y-m-d');
 $task3->status = "verspätet erledigt";
 
 $task4->taskname = "Lawn mowing";
 $task4->description = "My lawn looks like a mess.";
 $task4->scope = 2;
-$task4->deadline = date_create("2020-06-28");
+$task4->deadline = date_format(date_create("2020-06-28"), 'Y-m-d');
 $task4->status = "abgebrochen";
 
 $task5->taskname = "Study for the exam";
 $task5->description = "I have to learn.";
 $task5->scope = 5;
-$task5->deadline = date_create("2020-06-15");
+$task5->deadline = date_format(date_create("2020-06-15"), 'Y-m-d');
 $task5->status = "erledigt";
 
 $task6->taskname = "tax declaration";
 $task6->description = "I need to do my tax declaration till 31.07.";
 $task6->scope = 3;
-$task6->deadline = date_create("2020-07-31");
+$task6->deadline = date_format(date_create("2020-07-31"), 'Y-m-d');
 $task6->status = "In Bearbeitung";
 
 
