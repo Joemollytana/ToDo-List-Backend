@@ -29,12 +29,13 @@
     - "Allgemeine" Kontrollelemente (~~createTasklist~~, deleteTasklist, changeUserPassword, ...)
     - **WICHTIG: Die Navigation sollte irgendwie als einzelne Komponente implementiert werden** --> aktuell wurde die Navigation in todolist implementiert. Problem ist, dass Navigation kein childElement von todlist ist und dementsprechend die Datenübertragung schwer ist. Bei der Auswahl der Aufgabenlist müsste ja von der Nav.Komponente über die todolist Komponente auf die task Komponente zugegriffen werden 
   
-- User-Feedback: (@David)
+- ~~User-Feedback: (@David)~~
+  
   - ~~Man kann erledigte Aufgaben nicht verändern~~ 
   - ~~" nicht löschen~~
   - ~~Status dropdown~~ 
-  - MUSS-Felder
-  - Kalender -> date Datentyp (nicht datetime + engl. Datenformat)
+  - ~~MUSS-Felder~~
+  - ~~Kalender -> date Datentyp (nicht datetime + engl. Datenformat)~~
   
 - Design (Angular Material)
   
