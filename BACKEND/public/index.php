@@ -50,6 +50,12 @@ Routing
 
 /* GET-Requests */
 
+//
+$app->get('/', function (Request $request, Response $response, $args) {
+    $response->getBody()->write('Welcome!');
+    return $response;
+});
+
 // Show all user
 $app->get('/lists_user', function (Request $request, Response $response, $args) {
     $lists = R::findAll('user');
@@ -94,8 +100,19 @@ $app->get('/tasklist/{tasklistId}', function (Request $request, Response $respon
     return $response;
 });
 
+// Get all tasks
 $app->get('/tasks', function (Request $request, Response $response, $args) {
     $tasks = R::findAll('tasks');
+    $response->getBody()->write(json_encode($tasks));
+    return $response;
+});
+
+// Get all tasks of one special tasklist in special order
+$app->get('/tasks/{tasklistId}', function (Request $request, Response $response, $args) {
+    // example URL: "http://localhost/Perschke-Webanwendung/BACKEND/public/tasks/1?sort=taskname&ord=desc"
+    $orderParam = $request->getQueryParams()['sort'];
+    $order = $request->getQueryParams()['ord'];
+    $tasks = R::getAll('SELECT * FROM tasks WHERE tasklist_id=' . $args['tasklistId'] . ' ORDER BY ' . $orderParam . ' ' . $order);
     $response->getBody()->write(json_encode($tasks));
     return $response;
 });
@@ -245,7 +262,8 @@ $app->put('/user/{uid}', function (Request $request, Response $response, $args) 
     $parsedBody = json_decode((string)$request->getBody(), true);
     $user = R::load('user', $args['uid']);
     $user->username = $user->username;
-    $user->password = password_hash($parsedBody['password'], PASSWORD_DEFAULT);
+    //$user->password = password_hash($parsedBody['password'], PASSWORD_DEFAULT);
+    $user->password = hash('sha256', $parsedBody['password']);
     R::store($user);
     $response->getBody()->write(json_encode($user));
     return $response;

@@ -28,7 +28,7 @@ $tasklist2 = R::dispense('tasklist');
 $user1->username = "test";
 $user1->password = hash('sha256', 'asdf');
 
-$user2->username = "test";
+$user2->username = "Bob";
 $user2->password = hash('sha256', 'fdsa');
 
 /* Taskliste */
