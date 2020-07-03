@@ -172,11 +172,11 @@ return $response;
 
 
 //login ****************+ nochmal überdenken
-$app->post('/login', function (Request $request, Response $response, $args){
+/*$app->post('/login', function (Request $request, Response $response, $args){
     $pasedBody = $request->getParsedBody();
 
 
-});
+});*/
 
 
 

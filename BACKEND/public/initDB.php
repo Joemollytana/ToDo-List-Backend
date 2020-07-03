@@ -47,14 +47,14 @@ $task1->status = "offen";
 $task2->taskname = "Develop Web-App";
 $task2->description = "I have to develop a Web-App with PHP.";
 $task2->scope = 4;
-$task2->deadline = date_format(date_create("2020-06-17"), 'Y-m-d');
+$task2->deadline = date_format(date_create("2020-07-03"), 'Y-m-d');
 $task2->deadline = "2020-06-17";
 $task2->status = "In Bearbeitung";
 
 $task3->taskname = "Clean my desk";
 $task3->description = "I need to clean my desk, before I start to develop the Web-App.";
 $task3->scope = 1;
-$task3->deadline = date_format(date_create("2020-06-17"), 'Y-m-d');
+$task3->deadline = date_format(date_create("2020-06-30"), 'Y-m-d');
 $task3->status = "verspätet erledigt";
 
 $task4->taskname = "Lawn mowing";
